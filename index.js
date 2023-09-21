@@ -10,8 +10,15 @@ const items = [
 (function () {
   let counter = 0;
 
-  document.querySelector('.btn-prev').addEventListener('click', forwardPrew);
-  document.querySelector('.btn-next').addEventListener('click', forwardNext);
+  function modalWindow() {
+    const modal = document.getElementById('myModal');
+    const modalImg = document.getElementById('img01');
+    const captionText = document.getElementById('caption');
+    modal.style.display = 'block';
+    modalImg.src = this.src;
+    modalImg.id = this.id;
+    captionText.innerHTML = this.alt;
+  }
 
   const generateContent = () => {
     const root = document.getElementById('root');
@@ -32,6 +39,42 @@ const items = [
   };
 
   generateContent();
+
+  const deleteClass = (arg) => {
+    const elem = document.querySelector(`.photos.${arg}`);
+    elem.classList.remove(arg);
+  };
+
+  const generateNewPhoto = (arg, arg2) => {
+    const newImg = document.createElement('img');
+    newImg.setAttribute('id', arg);
+    newImg.classList.add('photos', arg2);
+    newImg.src = items[arg];
+    newImg.alt = items[arg];
+    newImg.addEventListener('click', modalWindow);
+    document.querySelector('.wrapper').append(newImg);
+    setTimeout(() => {
+      deleteClass(arg2);
+    }, 100);
+  };
+
+  const changeOpacity = (ind) => {
+    const change = document.getElementsByClassName('img-gallery')[ind];
+    change.classList.add('opas');
+  };
+
+  const deleteOpacity = () => {
+    for (let i = 0; i <= items.length - 1; i += 1) {
+      if (
+        document
+          .getElementsByClassName('img-gallery')[i].classList.contains('opas')
+      ) {
+        document
+          .getElementsByClassName('img-gallery')[i].classList.remove('opas');
+      }
+    }
+    changeOpacity(counter);
+  };
 
   function forwardNext() {
     counter += 1;
@@ -55,40 +98,11 @@ const items = [
     deleteOpacity();
   }
 
-  const generateNewPhoto = (arg, arg2) => {
-    const newImg = document.createElement('img');
-    newImg.setAttribute('id', arg);
-    newImg.classList.add('photos', arg2);
-    newImg.src = items[arg];
-    newImg.alt = items[arg];
-    newImg.addEventListener('click', modalWindow);
-    document.querySelector('.wrapper').append(newImg);
-    setTimeout(function () {
-      deleteClass(arg2);
-    }, 100);
-  };
-
-  const deleteClass = (arg) => {
-    const elem = document.querySelector(`.photos.${arg}`);
-    elem.classList.remove(arg);
-  };
+  document.querySelector('.btn-prev').addEventListener('click', forwardPrew);
+  document.querySelector('.btn-next').addEventListener('click', forwardNext);
 
   const firstOpacity = () => {
     document.getElementsByClassName('img-gallery')[0].classList.add('opas');
-  };
-
-  const createGallery = () => {
-    const gallery = document.querySelector('.gallery');
-    items.forEach((el, ind) => {
-      const img = document.createElement('img');
-      img.src = el;
-      img.setAttribute('id', ind);
-      img.classList.add('img-gallery');
-      img.addEventListener('click', function (e) {
-        targetPhoto(e);
-      });
-      gallery.append(img);
-    });
   };
 
   const targetPhoto = (e) => {
@@ -98,59 +112,42 @@ const items = [
     deleteOpacity();
   };
 
-  createGallery();
-  firstOpacity();
-
-  const deleteOpacity = () => {
-    for (let i = 0; i <= items.length - 1; i += 1) {
-      if (
-        document
-          .getElementsByClassName('img-gallery')
-          [i].classList.contains('opas')
-      ) {
-        document
-          .getElementsByClassName('img-gallery')
-          [i].classList.remove('opas');
-      }
-    }
-    changeOpacity(counter);
+  const createGallery = () => {
+    const gallery = document.querySelector('.gallery');
+    items.forEach((el, ind) => {
+      const img = document.createElement('img');
+      img.src = el;
+      img.setAttribute('id', ind);
+      img.classList.add('img-gallery');
+      img.addEventListener('click', (e) => {
+        targetPhoto(e);
+      });
+      gallery.append(img);
+    });
   };
 
-})();
+  createGallery();
+  firstOpacity();
+}());
 
-const changeOpacity = (ind) => {
-  let change = document.getElementsByClassName('img-gallery')[ind];
-  change.classList.add('opas');
-};
+const span = document.getElementsByClassName('close')[0];
 
-function modalWindow (){
-  const modal = document.getElementById('myModal');
-  const modalImg = document.getElementById('img01');
-  const captionText = document.getElementById('caption');
-    modal.style.display = 'block';
-    modalImg.src = this.src;
-    modalImg.id = this.id
-    captionText.innerHTML = this.alt;
-}
-
-const span = document.getElementsByClassName("close")[0];
-
-span.onclick = function() { 
+span.onclick = function () {
   const modal = document.getElementById('myModal');
   modal.style.display = 'none';
-}
-
-const arrowRight = document.querySelector('.arrow-right');
-arrowRight.addEventListener('click', forwardRight);
+};
 
 function forwardRight() {
   const currentImg = document.querySelector('.modal-content');
   const attributeValue = currentImg.getAttribute('id');
-  console.log(Number(attributeValue))
+  console.log(Number(attributeValue));
   // counter += 1;
   //   if (counter >= items.length) counter = 0;
   currentImg.classList.add('img-shift-modal');
   setTimeout(() => {
     currentImg.remove();
-  }, 300)
+  }, 300);
 }
+
+const arrowRight = document.querySelector('.arrow-right');
+arrowRight.addEventListener('click', forwardRight);
