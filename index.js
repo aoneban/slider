@@ -8,7 +8,8 @@ const items = [
 ];
 
 (function () {
-  let counter = 0;
+  let COUNTER = 0;
+  let COUNTER_SLIDER = 0;
 
   function modalWindow() {
     const modal = document.getElementById('myModal');
@@ -17,7 +18,7 @@ const items = [
     modal.style.display = 'block';
     modalImg.src = this.src;
     modalImg.id = this.id;
-    captionText.innerHTML = this.alt;
+    captionText.innerText = this.src;
   }
 
   const generateContent = () => {
@@ -30,7 +31,7 @@ const items = [
     h1.textContent = 'Gallery';
 
     const img = document.createElement('img');
-    img.setAttribute('id', counter);
+    img.setAttribute('id', COUNTER);
     img.classList.add('photos');
     img.addEventListener('click', modalWindow);
     img.src = 'https://picsum.photos/500/300/?random=0';
@@ -40,21 +41,21 @@ const items = [
 
   generateContent();
 
-  const deleteClass = (arg) => {
-    const elem = document.querySelector(`.photos.${arg}`);
-    elem.classList.remove(arg);
+  const deleteClass = (arg1, arg2) => {
+    const elem = document.querySelector(`${arg1}.${arg2}`);
+    elem.classList.remove(arg2);
   };
 
-  const generateNewPhoto = (arg, arg2) => {
+  const generateNewPhoto = (arg, arg2, arg3) => {
     const newImg = document.createElement('img');
     newImg.setAttribute('id', arg);
-    newImg.classList.add('photos', arg2);
+    newImg.classList.add(arg3, arg2);
     newImg.src = items[arg];
     newImg.alt = items[arg];
     newImg.addEventListener('click', modalWindow);
     document.querySelector('.wrapper').append(newImg);
     setTimeout(() => {
-      deleteClass(arg2);
+      deleteClass('.photos', arg2);
     }, 100);
   };
 
@@ -73,27 +74,27 @@ const items = [
           .getElementsByClassName('img-gallery')[i].classList.remove('opas');
       }
     }
-    changeOpacity(counter);
+    changeOpacity(COUNTER);
   };
 
   function forwardNext() {
-    counter += 1;
-    if (counter >= items.length) counter = 0;
+    COUNTER += 1;
+    if (COUNTER >= items.length) COUNTER = 0;
     document.querySelector('.photos').classList.add('img-shift');
     setTimeout(() => {
       document.querySelector('.photos').remove();
-      generateNewPhoto(counter, 'img-shift2');
+      generateNewPhoto(COUNTER, 'img-shift2', 'photos');
     }, 300);
     deleteOpacity();
   }
 
   function forwardPrew() {
-    counter -= 1;
-    if (counter < 0) counter = items.length - 1;
+    COUNTER -= 1;
+    if (COUNTER < 0) COUNTER = items.length - 1;
     document.querySelector('.photos').classList.add('img-unshift');
     setTimeout(() => {
       document.querySelector('.photos').remove();
-      generateNewPhoto(counter, 'img-unshift2');
+      generateNewPhoto(COUNTER, 'img-unshift2', 'photos');
     }, 300);
     deleteOpacity();
   }
@@ -106,9 +107,12 @@ const items = [
   };
 
   const targetPhoto = (e) => {
-    counter = Number(e.currentTarget.id);
-    document.querySelector('.photos').remove();
-    generateNewPhoto(counter, 'img-shift2');
+    COUNTER = Number(e.currentTarget.id);
+    document.querySelector('.photos').classList.add('img-shift');
+    setTimeout(() => {
+      document.querySelector('.photos').remove();
+      generateNewPhoto(COUNTER, 'img-shift2', 'photos');
+    }, 300);
     deleteOpacity();
   };
 
@@ -128,26 +132,70 @@ const items = [
 
   createGallery();
   firstOpacity();
+
+  const span = document.getElementsByClassName('close')[0];
+
+  span.onclick = function () {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+  };
+
+  function generatePhotoForSlider(arg, arg2, arg3) {
+    const newImg = document.createElement('img');
+    newImg.setAttribute('id', arg);
+    newImg.classList.add(arg3, arg2);
+    newImg.src = items[arg];
+    newImg.alt = items[arg];
+    newImg.style.animation = 'none';
+    document.querySelector('.modal-wrapper').append(newImg);
+    setTimeout(() => {
+      deleteClass('.modal-content', arg2);
+    }, 300);
+  }
+
+  const removeCaption = () => {
+    const caption = document.getElementById('caption');
+    caption.remove();
+  };
+
+  const createCaption = () => {
+    const modal = document.getElementById('myModal');
+    const caption = document.createElement('div');
+    caption.setAttribute('id', 'caption');
+    caption.innerText = items[COUNTER_SLIDER];
+    modal.append(caption);
+  };
+
+  function forwardRight() {
+    const currentImg = document.querySelector('.modal-content');
+    const attributeValue = currentImg.getAttribute('id');
+    COUNTER_SLIDER = Number(attributeValue) + 1;
+    if (COUNTER_SLIDER >= items.length) COUNTER_SLIDER = 0;
+    currentImg.classList.add('img-shift-modal');
+    removeCaption();
+    setTimeout(() => {
+      currentImg.remove();
+      generatePhotoForSlider(COUNTER_SLIDER, 'img-shift2-modal', 'modal-content');
+      createCaption();
+    }, 300);
+  }
+
+  function forwardLeft() {
+    const currentImg = document.querySelector('.modal-content');
+    const attributeValue = currentImg.getAttribute('id');
+    COUNTER_SLIDER = Number(attributeValue) - 1;
+    if (COUNTER_SLIDER < 0) COUNTER_SLIDER = items.length - 1;
+    currentImg.classList.add('img-unshift-modal');
+    removeCaption();
+    setTimeout(() => {
+      currentImg.remove();
+      generatePhotoForSlider(COUNTER_SLIDER, 'img-unshift2-modal', 'modal-content');
+      createCaption();
+    }, 300);
+  }
+
+  const arrowRight = document.querySelector('.arrow-right');
+  arrowRight.addEventListener('click', forwardRight);
+  const arrowLeft = document.querySelector('.arrow-left');
+  arrowLeft.addEventListener('click', forwardLeft);
 }());
-
-const span = document.getElementsByClassName('close')[0];
-
-span.onclick = function () {
-  const modal = document.getElementById('myModal');
-  modal.style.display = 'none';
-};
-
-function forwardRight() {
-  const currentImg = document.querySelector('.modal-content');
-  const attributeValue = currentImg.getAttribute('id');
-  console.log(Number(attributeValue));
-  // counter += 1;
-  //   if (counter >= items.length) counter = 0;
-  currentImg.classList.add('img-shift-modal');
-  setTimeout(() => {
-    currentImg.remove();
-  }, 300);
-}
-
-const arrowRight = document.querySelector('.arrow-right');
-arrowRight.addEventListener('click', forwardRight);

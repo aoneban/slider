@@ -28,16 +28,26 @@ img {
   transform: translateX(-550px); 
 }
 .img-shift-modal {
-  transform: translateX(-950px); 
+  transform: translateX(-1150px); 
+}
+
+.img-shift2-modal {
+  transform: translateX(130%); 
 }
 .img-unshift {
   transform: translateX(550px); 
+}
+.img-unshift-modal {
+  transform: translateX(1150px); 
 }
 .img-shift2 {
   transform: translateX(100%); 
 }
 .img-unshift2 {
   transform: translateX(-100%);
+}
+.img-unshift2-modal {
+  transform: translateX(-130%);
 }
 .img-gallery {
   width: 70px;
@@ -87,7 +97,7 @@ img {
   top: 0;
   width: 100%;
   height: 100%; 
-  overflow: auto; 
+  overflow: hidden; 
   background-color: rgb(0, 0, 0); 
   background-color: rgba(0, 0, 0, 0.9);
 }
