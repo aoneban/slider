@@ -3,11 +3,18 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  background-color: hsla(58, 48%, 70%, 0.482);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: darkcyan;
+}
+
 .wrapper {
   max-width: 500px; 
   margin: 0 auto;
   overflow: hidden;
-  min-height: 310px;
+  min-height: 350px;
 }
 .new {
   color: red !important;
@@ -50,8 +57,9 @@ img {
   transform: translateX(-130%);
 }
 .img-gallery {
-  width: 70px;
-  height: auto;
+  width: 80px;
+  height: 55px;
+  padding: 3px ;
 }
 .opas {
   opacity: 0.4;
@@ -130,7 +138,7 @@ img {
 
 .close {
   position: absolute;
-  top: 15px;
+  top: 11px;
   right: 35px;
   color: #f1f1f1;
   font-size: 40px;
@@ -141,17 +149,7 @@ img {
 .play {
   position: absolute;
   top: 15px;
-  right: 115px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-} 
-
-.pause {
-  position: absolute;
-  top: 15px;
-  right: 75px;
+  right: 70px;
   color: #f1f1f1;
   font-size: 40px;
   font-weight: bold;
@@ -183,6 +181,21 @@ img {
   color: #bbb;
   text-decoration: none;
   cursor: pointer;
+}
+
+#icon-play,
+.arrows {
+  border: 1px solid #666666;
+}
+
+#icon-play:hover,
+.arrows:hover {
+  background-color: #8e7c8c;
+}
+
+.arrows {
+  padding: 8px 0 0 0;
+  border-radius: 3px;
 }
 
 .player {
