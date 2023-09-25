@@ -82,7 +82,7 @@ const deleteOpacity = () => {
   changeOpacity(COUNTER);
 };
 
-function forwardNext() {
+const forwardNext = () => {
   COUNTER += 1;
   if (COUNTER >= items.length) COUNTER = 0;
   document.querySelector('.photos').classList.add('img-shift');
@@ -91,9 +91,9 @@ function forwardNext() {
     generateNewPhoto(COUNTER, 'img-shift2', 'photos');
   }, 300);
   deleteOpacity();
-}
+};
 
-function forwardPrew() {
+const forwardPrew = () => {
   COUNTER -= 1;
   if (COUNTER < 0) COUNTER = items.length - 1;
   document.querySelector('.photos').classList.add('img-unshift');
@@ -102,7 +102,7 @@ function forwardPrew() {
     generateNewPhoto(COUNTER, 'img-unshift2', 'photos');
   }, 300);
   deleteOpacity();
-}
+};
 
 document.querySelector('.btn-prev').addEventListener('click', forwardPrew);
 document.querySelector('.btn-next').addEventListener('click', forwardNext);
@@ -198,7 +198,6 @@ const arrowLeft = document.querySelector('.arrow-left');
 arrowLeft.addEventListener('click', forwardLeft);
 
 const closeModalWindow = document.querySelector('.close');
-
 closeModalWindow.addEventListener('click', () => {
   const closeSlider = document.getElementById('icon-play');
   const modal = document.getElementById('myModal');
